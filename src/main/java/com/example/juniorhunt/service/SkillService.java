@@ -15,9 +15,11 @@ import java.util.Set;
 public class SkillService {
 
     private final SkillRepository skillRepository;
+    private final PositionService positionService;
 
-    public SkillService(SkillRepository skillRepository) {
+    public SkillService(SkillRepository skillRepository, PositionService positionService) {
         this.skillRepository = skillRepository;
+        this.positionService = positionService;
     }
 
     public void allSkills() {
@@ -33,17 +35,15 @@ public class SkillService {
         List<Skill> list = new java.util.ArrayList<>(skillRepository.findAll().stream().filter(u -> u.getType().getName().equals(skill)).toList());
 
 
-
         list.removeIf(userSkills::contains);
 
         Iterator<Skill> iterator = list.iterator();
-        while(iterator.hasNext()){
-            if (userSkills.contains(iterator.next())){
+        while (iterator.hasNext()) {
+            if (userSkills.contains(iterator.next())) {
                 System.out.println(iterator);
                 iterator.remove();
             }
         }
-
 
 
         return list.stream().map(Skill::getSkill).toList();
@@ -56,10 +56,14 @@ public class SkillService {
         final List<Skill> typeList = skillRepository.findAll().stream().filter(u -> u.getType().equals(type)).toList();
 
         for (Skill skill : typeList) {
-            if (dataSkills.containsKey(skill.getSkill()))
+            if (dataSkills.containsKey(skill.getSkill())) {
                 user.getSkills().add(skill);
-            else
+                //positionService.savePositionSkills(user.getPosition().getId(), skill);
+            } else {
                 user.getSkills().remove(skill);
+                //positionService.removePositionSkill(user.getPosition().getId(), skill);
+            }
         }
+
     }
 }

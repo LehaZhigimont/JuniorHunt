@@ -45,7 +45,7 @@ public class UserController {
         model.addAttribute("hardSkills", skillService.typeSkills("HARD", user.getSkills()));
         model.addAttribute("softSkills", skillService.typeSkills("SOFT", user.getSkills()));
         model.addAttribute("toolSkills", skillService.typeSkills("TOOL", user.getSkills()));
-
+        model.addAttribute("listLangs", userService.listLang());
         model.addAttribute("userHardSkills", userService.userListTypeSkills(user, "HARD"));
         model.addAttribute("userSoftSkills", userService.userListTypeSkills(user, "SOFT"));
         model.addAttribute("userToolSkills", userService.userListTypeSkills(user, "TOOL"));
@@ -82,6 +82,7 @@ public class UserController {
         model.addAttribute("userSoftSkills", userService.userListTypeSkills(user, "SOFT"));
         model.addAttribute("userToolSkills", userService.userListTypeSkills(user, "TOOL"));
         // }
+        model.addAttribute("listLangs", userService.listLang());
         model.addAttribute("user", user);
         return "junior";
     }
@@ -105,9 +106,9 @@ public class UserController {
 
     @PostMapping("aboutMe")
     public String updateAboutMe(@RequestParam Map<String, String> userForm,
-                             Model model) {
+                                Model model) {
 
-        for (String s : userForm.keySet()       ) {
+        for (String s : userForm.keySet()) {
             System.out.println(s + " - " + userForm.get(s));
         }
         userService.saveUser(userForm);
@@ -115,7 +116,29 @@ public class UserController {
         model.addAttribute("hardSkills", skillService.typeSkills("HARD", user.getSkills()));
         model.addAttribute("softSkills", skillService.typeSkills("SOFT", user.getSkills()));
         model.addAttribute("toolSkills", skillService.typeSkills("TOOL", user.getSkills()));
+        model.addAttribute("listLangs", userService.listLang());
+        model.addAttribute("userHardSkills", userService.userListTypeSkills(user, "HARD"));
+        model.addAttribute("userSoftSkills", userService.userListTypeSkills(user, "SOFT"));
+        model.addAttribute("userToolSkills", userService.userListTypeSkills(user, "TOOL"));
+        model.addAttribute("user", user);
+        return "redirect:/junior";
+    }
 
+    @PostMapping("lang")
+    public String updateLang(@RequestParam Map<String, String> userForm,
+                             Model model) {
+
+        System.out.println("testPosition");
+        userService.positionTest();
+        for (String s : userForm.keySet()) {
+            System.out.println(s + " - " + userForm.get(s));
+        }
+        userService.saveUser(userForm);
+        User user = userRepository.findById(Long.valueOf(userForm.get("userId"))).orElse(null);
+        model.addAttribute("hardSkills", skillService.typeSkills("HARD", user.getSkills()));
+        model.addAttribute("softSkills", skillService.typeSkills("SOFT", user.getSkills()));
+        model.addAttribute("toolSkills", skillService.typeSkills("TOOL", user.getSkills()));
+        model.addAttribute("listLangs", userService.listLang());
         model.addAttribute("userHardSkills", userService.userListTypeSkills(user, "HARD"));
         model.addAttribute("userSoftSkills", userService.userListTypeSkills(user, "SOFT"));
         model.addAttribute("userToolSkills", userService.userListTypeSkills(user, "TOOL"));

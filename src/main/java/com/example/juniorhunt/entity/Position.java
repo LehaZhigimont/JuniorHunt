@@ -17,26 +17,14 @@ public class Position {
     private Long id;
     private String position;
 
-    @OneToMany
+    @ManyToMany
+    @JoinTable(name = "position_skill",
+            joinColumns = @JoinColumn(name = "position_id"),
+            inverseJoinColumns = @JoinColumn(name = "skill_id"))
+    @ToString.Exclude
     private Set<Skill> skills;
 
     public Position(String position) {
         this.position = position;
     }
-
-//    public void addUserForPosition(User user) {
-//        users.add(user);
-//        user.setPosition(this);
-//    }
-//
-//    public void removeUserPosition(User user) {
-//        users.remove(user);
-//        user.setPosition(null);
-//    }
-
-    @Override
-    public String toString() {
-        return getPosition();
-    }
-
 }

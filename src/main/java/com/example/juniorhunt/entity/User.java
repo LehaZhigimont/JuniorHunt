@@ -32,16 +32,17 @@ public class User implements UserDetails {
     private String aboutMe;
     private String experience;
     private String courses;
-    private String language;
+    @Enumerated(EnumType.STRING)
+    private Language language;
     private String urlImgProfile;
     private String urlTelegram;
     private String urlLinkedin;
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @ManyToMany
-    @ToString.Exclude
-    private Set<Skill> skill;
+//    @ManyToMany
+//    @ToString.Exclude
+//    private Set<Skill> skill;
 
     @ManyToMany
     @JoinTable(name = "user_skill",

@@ -9,9 +9,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -70,7 +68,6 @@ public class UserService implements UserDetailsService {
             user.setEmail(dataUser.get(EMAIL));
         if (dataUser.containsKey(FIRST_NAME))
             user.setFirstName(dataUser.get(FIRST_NAME));
-
         if (dataUser.containsKey(LAST_NAME))
             user.setLastName(dataUser.get(LAST_NAME));
         if (dataUser.containsKey(PHONE))
@@ -84,7 +81,7 @@ public class UserService implements UserDetailsService {
         if (dataUser.containsKey(COURSES))
             user.setCourses(dataUser.get(COURSES));
         if (dataUser.containsKey(LANGUAGE))
-            user.setLanguage(dataUser.get(LANGUAGE));
+            user.setLanguage(findByName(dataUser.get(LANGUAGE)));
         if (dataUser.containsKey(URL_IMG_PROFILE))
             user.setUrlImgProfile(dataUser.get(URL_IMG_PROFILE));
         if (dataUser.containsKey(URL_TELEGRAM))
@@ -118,5 +115,20 @@ public class UserService implements UserDetailsService {
         return user.orElse(null);
     }
 
+    public List<Language> listLang(){
+        return Arrays.stream(Language.values()).toList();
+    }
+
+    private Language findByName(String name){
+        Language language = Arrays.stream(Language.values()).filter(l -> l.getName().equals(name)).findFirst().get();
+
+        System.out.println(language);
+        return language;
+    }
+
+    public void positionTest(){
+        positionRepository.findByPosition("Java").getSkills().forEach(System.out::println);
+
+    }
 
 }
